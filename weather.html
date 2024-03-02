@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>weather</p>
+    <input type="text" placeholder="search" id="countryInput">
+    <button onclick="searchWeather()">Search</button>
+    <div>
+        <h1>Temp:</h1>
+        <p id="temperature">30°C</p>
+        <p id="condition"></p>
+        <img id="condition_icon" src=""></img>
+        <p id="feels"></p>
+        <p id="forecast"></p>
+    </div>
+
+    <script>
+        function searchWeather() {
+            const country = document.getElementById('countryInput').value;
+ 
+            fetch(`/weather?country=${country}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('temperature').innerText = `${data.current.temp_c}°C`;
+                    document.getElementById('condition').innerText = `${data.current.condition.text}`;
+                    document.getElementById('condition_icon').src = `${data.current.condition.icon}`;
+                    document.getElementById('feels').innerText = `feels like: ${data.current.feelslike_c}`;
+
+                    
+                    const forecastDiv = document.getElementById('forecast');
+                    forecastDiv.innerHTML = '';
+
+                    data.forecast.forecastday.forEach(day => {
+                        const dayDiv = document.createElement('div');
+                        dayDiv.innerHTML = `
+                            <h3>${day.date}</h3>
+                            <p>Max Temp: ${day.day.maxtemp_c}°C</p>
+                            <p>Min Temp: ${day.day.mintemp_c}°C</p>
+                            <p>Condition: ${day.day.condition.text}</p>
+                            <p>feels like: ${day.day.condition.feelslike_c}
+                            <img src="${day.day.condition.icon}" alt="${day.day.condition.text}">
+                        `;
+                        forecastDiv.appendChild(dayDiv);
+                        
+                    });
+
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('Error fetching weather data');
+                });
+        }
+    </script>
+</body>
+</html>

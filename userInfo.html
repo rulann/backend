@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <p id="username"> Username :</p>
+        <p id="email"> email: </p>
+        <p id="password"> password: </p>
+        <script> 
+            var currentEmail=localStorage.getItem('email')  
+            var currentName=localStorage.getItem('username') 
+            var currentPSW=localStorage.getItem('password') 
+         
+            document.getElementById("username").innerHTML= "Email: " +currentEmail  
+            document.getElementById("email").innerHTML= "Username: " +currentName 
+            document.getElementById("password").innerHTML= "Password: " +currentPSW   
+        </script>
+    </body>
+</html>
